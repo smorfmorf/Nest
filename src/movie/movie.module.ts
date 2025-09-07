@@ -6,10 +6,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Global() // делает модуль глобальным и не нужно в каждом модуле делать импорт, а только в app.module
 @Module({
-  imports: [TypeOrmModule.forFeature([MovieModel])], // ✅ Загружаем таблицу в БД
   controllers: [MovieController],
   providers: [MovieService],
-  //Service будет доступен в других модулях
   exports: [MovieService],
+
+  imports: [TypeOrmModule.forFeature([MovieModel])], // ✅ Загружаем таблицу в БД
 })
 export class MovieModule {}

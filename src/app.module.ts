@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 // точка входа // nest g res movie --no-spec (моудль указывает какие Компоненты входят в этот модуль)
 
 @Module({
+  // тут подключаем стороние либы чтобы они были доступны по всему App
   imports: [
     TaskModule,
     MovieModule,

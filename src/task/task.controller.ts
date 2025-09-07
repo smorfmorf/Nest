@@ -14,7 +14,8 @@ import { CreateDto, UpdateDto } from './dto/dto';
 
 @Controller('task')
 export class TaskController {
-  constructor(private readonly taskService: TaskService) {} // через конструктор внедряем TaskService
+  // через конструктор внедряем TaskService
+  constructor(private readonly taskService: TaskService) {}
 
   @Get()
   findAll(@Ip() ip: string) {
