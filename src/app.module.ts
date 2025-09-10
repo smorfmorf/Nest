@@ -4,10 +4,8 @@ import { AppService } from './app.service';
 import { TaskModule } from './task/task.module';
 import { MovieModule } from './movie/movie.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-// точка входа // nest g res movie --no-spec (моудль указывает какие Компоненты входят в этот модуль)
-
+// точка входа приложения (тут объединяем все остальные модули в один)
 @Module({
-  // тут подключаем стороние либы чтобы они были доступны по всему App
   imports: [
     TaskModule,
     MovieModule,
@@ -21,8 +19,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       autoLoadEntities: true,
       synchronize: true,
     }),
-  ], // тут импортим другие модули
-  controllers: [AppController], //controllers - обрабатывают HTTP запросы
-  providers: [AppService], // service - содержит логику
+  ],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
+// в imports - подключаем стороние либы чтобы они были доступны по всему App
+// controllers - обрабатывают входящие HTTP запросы
+// service - содержит логику (мозг приложения)
+// "cmd nest g res movie --no-spec"

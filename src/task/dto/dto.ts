@@ -1,5 +1,5 @@
 import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import { StartWith } from '../decorator';
+import { StartWith } from '../decorator/start-with.decorator';
 
 export class CreateDto {
   @IsString({ message: 'Поле title строка!' })
