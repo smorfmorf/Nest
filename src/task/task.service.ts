@@ -40,6 +40,7 @@ export class TaskService {
       title,
       tags,
       status: 'pending',
+      password: dto.password,
     };
     this.tasks.push(newTask);
 
@@ -55,7 +56,9 @@ export class TaskService {
 
   delete(id: number) {
     const task = this.findById(id);
-
+    if (!task) {
+      throw new NotFoundException('Task not found');
+    }
     this.tasks = this.tasks.filter((task) => task.id !== id);
 
     return task;

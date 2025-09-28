@@ -11,10 +11,22 @@ import {
 } from '@nestjs/common';
 import { TaskService } from './task.service';
 
-import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import {
+  IsArray,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  Matches,
+} from 'class-validator';
 import { StartWith } from './decorator/start-with.decorator';
 
-// DTO - какие данные приходят от клиента
+// export enum TaskTag {
+//   WORK = 'work',
+//   HOME = 'home',
+//   LEARNING = 'learning',
+// }
+
+// DTO (Объект получаемый от клиента) - какие данные ждем от клиента
 export class CreateDto {
   @IsString({ message: 'Поле title строка!' })
   @IsNotEmpty()
@@ -23,11 +35,20 @@ export class CreateDto {
 
   @IsArray()
   @IsString({ each: true, message: 'Поле tags строка!' })
+  // @IsEnum(TaskTag, { message: 'Недопустимое значение тега', each: true })
   @IsOptional()
   tags: string[];
+
+  @Matches(/^(?=.*[A-Z])(?=.*\d).+$/, {
+    message:
+      'Пароль должен содержать хотя бы одну заглавную букву и одну цифру',
+  })
+  password: string;
 }
 
 export class UpdateDto {
+  @IsString({ message: 'Надо строку' })
+  @IsNotEmpty()
   title: string;
   status: string;
 }

@@ -4,7 +4,7 @@ import { MovieService } from './movie.service';
 import { MovieController } from './movie.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-@Global() // делает модуль глобальным и не нужно в каждом модуле делать импорт, а только в app.module
+@Global() // Глобальный модуль и не нужно в каждом модуле импортировать, а только в App
 @Module({
   controllers: [MovieController],
   providers: [MovieService],
