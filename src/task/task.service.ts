@@ -1,6 +1,6 @@
 import { MovieService } from './../movie/movie.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateDto, UpdateDto } from './dto/dto';
+import { CreateDto, UpdateDto } from './task.controller';
 
 @Injectable()
 export class TaskService {

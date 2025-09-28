@@ -10,7 +10,27 @@ import {
   Req,
 } from '@nestjs/common';
 import { TaskService } from './task.service';
-import { CreateDto, UpdateDto } from './dto/dto';
+
+import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { StartWith } from './decorator/start-with.decorator';
+
+// DTO - какие данные приходят от клиента
+export class CreateDto {
+  @IsString({ message: 'Поле title строка!' })
+  @IsNotEmpty()
+  @StartWith('Task', { message: 'Название должно начинаться c Task' })
+  title: string;
+
+  @IsArray()
+  @IsString({ each: true, message: 'Поле tags строка!' })
+  @IsOptional()
+  tags: string[];
+}
+
+export class UpdateDto {
+  title: string;
+  status: string;
+}
 
 @Controller('task')
 export class TaskController {
@@ -45,6 +65,7 @@ export class TaskController {
     return this.taskService.delete(Number(id));
   }
 
+  //? Пример вызова сервиса с другого модуля
   @Get('/movie/test')
   test(@Req() req: Request) {
     console.log('req: ', req.url);
