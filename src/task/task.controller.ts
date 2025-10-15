@@ -17,6 +17,7 @@ import {
   IsOptional,
   IsString,
   Matches,
+  MinLength,
 } from 'class-validator';
 import { StartWith } from './decorator/start-with.decorator';
 
@@ -37,7 +38,7 @@ export class CreateDto {
   @IsString({ each: true, message: 'Поле tags строка!' })
   // @IsEnum(TaskTag, { message: 'Недопустимое значение тега', each: true })
   @IsOptional()
-  tags: string[];
+  tags?: string[];
 
   @Matches(/^(?=.*[A-Z])(?=.*\d).+$/, {
     message:
@@ -46,9 +47,10 @@ export class CreateDto {
   password: string;
 }
 
-export class UpdateDto {
+export class UpdateTaskDto {
   @IsString({ message: 'Надо строку' })
   @IsNotEmpty()
+  @MinLength(3)
   title: string;
   status: string;
 }
@@ -77,7 +79,7 @@ export class TaskController {
 
   // чтобы получить динамический параметр @Param
   @Put(':id')
-  update(@Param('id') id: string, @Body() dto: UpdateDto) {
+  update(@Param('id') id: string, @Body() dto: UpdateTaskDto) {
     return this.taskService.update(Number(id), dto);
   }
 

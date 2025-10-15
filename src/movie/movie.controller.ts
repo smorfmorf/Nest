@@ -1,6 +1,24 @@
 import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { MovieService } from './movie.service';
-import { CreateMovieDTO } from './dto/movie-dto';
+
+import { IsInt, IsNotEmpty, IsString, Max, Min } from 'class-validator';
+
+export class CreateMovieDTO {
+  @IsNotEmpty()
+  @IsString()
+  title: string;
+
+  @IsNotEmpty()
+  @IsInt()
+  @Min(1888)
+  @Max(new Date().getFullYear())
+  releaseYear: number;
+
+  actorsId: string[];
+
+  @IsString()
+  imageUrl: string;
+}
 
 @Controller('movie')
 export class MovieController {

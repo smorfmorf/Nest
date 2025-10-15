@@ -1,6 +1,6 @@
 import { MovieService } from './../movie/movie.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateDto, UpdateDto } from './task.controller';
+import { CreateDto, UpdateTaskDto } from './task.controller';
 
 @Injectable()
 export class TaskService {
@@ -47,7 +47,7 @@ export class TaskService {
     return newTask;
   }
 
-  update(id: number, dto: UpdateDto) {
+  update(id: number, dto: UpdateTaskDto) {
     const task = this.findById(id);
     Object.assign(task, dto);
 

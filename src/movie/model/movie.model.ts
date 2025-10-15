@@ -1,14 +1,22 @@
+import { ActorModel } from 'src/actor/model/actor.model';
+import { PosterModel } from 'src/poster/model/poster.model';
+import { ReviewModel } from 'src/review/model/review.model';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity('movies')
+@Entity('moviesUmbrella')
 export class MovieModel {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: number;
 
   @Column({
@@ -33,4 +41,26 @@ export class MovieModel {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToMany(() => ReviewModel, (review) => review.movie)
+  reviews: ReviewModel[];
+
+  // Многие фильмы могут иметь много актёров
+  @ManyToMany(() => ActorModel, (actor) => actor.movies)
+
+  // 👈 промежуточная таблица, когда M-T-M создается промежуточная таблица которая хранит в себе 2 идентификатора id актера и id фильма
+  @JoinTable({
+    name: 'movie_actors',
+    // коллонка ссылки на фильм
+    joinColumn: { name: 'movie_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'actor_id', referencedColumnName: 'id' },
+  })
+  actors: ActorModel[];
+
+  @OneToOne(() => PosterModel, (poster) => poster.movie, {
+    cascade: true,
+    nullable: true,
+  })
+  @JoinColumn({ name: 'poster_id' }) // задаём имя внешнего ключа
+  poster: PosterModel | null; // nullable
 }
