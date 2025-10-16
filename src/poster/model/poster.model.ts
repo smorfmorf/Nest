@@ -3,7 +3,7 @@ import { MovieModel } from '../../movie/model/movie.model';
 
 @Entity('postersUmbrella')
 export class PosterModel {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: number;
 
   @Column()

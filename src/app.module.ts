@@ -7,25 +7,27 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ReviewModule } from './review/review.module';
 import { ActorModule } from './actor/actor.module';
 import { PosterModule } from './poster/poster.module';
+import { PrismaModule } from './prisma/prisma.module';
 // точка входа приложения (тут объединяем все остальные модули в один)
 // //! "cmd nest g res movie --no-spec"
 @Module({
   imports: [
-    TaskModule,
-    MovieModule,
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5433,
-      username: 'postgres',
-      password: '123456',
-      database: 'NestDB',
-      autoLoadEntities: true,
-      synchronize: true,
-    }),
-    ReviewModule,
-    ActorModule,
-    PosterModule,
+    // TaskModule,
+    // MovieModule,
+    // ReviewModule,
+    // ActorModule,
+    // PosterModule,
+    // TypeOrmModule.forRoot({
+    //   type: 'postgres',
+    //   host: 'localhost',
+    //   port: 5433,
+    //   username: 'postgres',
+    //   password: '123456',
+    //   database: 'NestDB',
+    //   autoLoadEntities: true,
+    //   synchronize: true,
+    // }),
+    PrismaModule,
   ],
   controllers: [AppController],
   providers: [AppService],

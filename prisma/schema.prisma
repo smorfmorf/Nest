@@ -1,0 +1,50 @@
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ТУТ описываем модели все в одном файле как я люблю ;D
+enum Genre{
+  ACTION
+  COMEDY
+  HORROR
+}
+
+model Movie{
+  id String @id @default(uuid())
+  title String
+  description String?
+
+  releaseYear Int @map("release_year") 
+  isPublic Boolean @default(false) @map("is_public")
+
+  genre Genre @default(HORROR)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("movies")
+}
+
+
+model Review {
+  id String @id @default(uuid())
+
+
+  content String
+  author String
+
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("reviews")
+}
+
+

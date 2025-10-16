@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, Post } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
+import { In, IsNull, Not, Repository } from 'typeorm';
 import { MovieModel } from './model/movie.model';
 import { CreateMovieDTO } from './movie.controller';
 import { ActorModel } from 'src/actor/model/actor.model';
@@ -49,6 +49,7 @@ export class MovieService {
     return await this.movieRepository.find({
       where: {
         isPublic: false,
+        poster: Not(IsNull()),
       },
       select: {
         id: true,
@@ -56,7 +57,7 @@ export class MovieService {
         releaseYear: true,
       },
       //Смотрим какое поле в модели отвечает за Many-to-Many
-      relations: ['actors'],
+      relations: ['actors', 'poster'],
     });
   }
 
@@ -76,7 +77,12 @@ export class MovieService {
     return await this.movieRepository.save(movie);
   }
 
-  getMovie() {
+  async getMovie() {
+    const response = await fetch('https://jsonplaceholder.typicode.com/todos');
+    const data = await response.json();
+
+    console.log(data);
+
     return { message: 'Я Movie импорт сервиса из другого модуля' };
   }
 }
