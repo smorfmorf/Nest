@@ -1,13 +1,9 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TaskModule } from './task/task.module';
-import { MovieModule } from './movie/movie.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ReviewModule } from './review/review.module';
-import { ActorModule } from './actor/actor.module';
-import { PosterModule } from './poster/poster.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { ActorModule } from './actor/actor.module';
+import { MovieModule } from './movie/movie.module';
 // точка входа приложения (тут объединяем все остальные модули в один)
 // //! "cmd nest g res movie --no-spec"
 @Module({
@@ -28,6 +24,8 @@ import { PrismaModule } from './prisma/prisma.module';
     //   synchronize: true,
     // }),
     PrismaModule,
+    ActorModule,
+    MovieModule,
   ],
   controllers: [AppController],
   providers: [AppService],

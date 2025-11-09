@@ -1,8 +1,9 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ActorService } from './actor.service';
-import { IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateActorDTO {
+  @IsNotEmpty()
   @IsString()
   name: string;
 }

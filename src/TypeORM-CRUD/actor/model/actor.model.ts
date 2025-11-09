@@ -1,4 +1,4 @@
-import { MovieModel } from 'src/movie/model/movie.model';
+import { MovieModel } from 'src/TypeORM-CRUD/movie/model/movie.model';
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from 'typeorm';
 
 @Entity('actorsUmbrella')

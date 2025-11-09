@@ -1,6 +1,6 @@
-import { ActorModel } from 'src/actor/model/actor.model';
-import { PosterModel } from 'src/poster/model/poster.model';
-import { ReviewModel } from 'src/review/model/review.model';
+import { ActorModel } from 'src/TypeORM-CRUD/actor/model/actor.model';
+import { PosterModel } from 'src/TypeORM-CRUD/poster/model/poster.model';
+import { ReviewModel } from 'src/TypeORM-CRUD/review/model/review.model';
 import {
   Column,
   CreateDateColumn,

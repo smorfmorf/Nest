@@ -1,5 +1,6 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { MovieService } from './movie.service';
+
 import { IsInt, IsNotEmpty, IsString, Max, Min } from 'class-validator';
 
 export class CreateMovieDTO {
@@ -28,8 +29,18 @@ export class MovieController {
     return this.movieService.findAll();
   }
 
+  @Get(':id')
+  findById(@Param('id') id: number) {
+    return this.movieService.findById(id);
+  }
+
   @Post()
   create(@Body() dto: CreateMovieDTO) {
     return this.movieService.create(dto);
+  }
+
+  @Put(':id')
+  update(@Param('id') id: number, @Body() dto: CreateMovieDTO) {
+    return this.movieService.update(id, dto);
   }
 }

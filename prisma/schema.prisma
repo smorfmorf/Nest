@@ -16,6 +16,8 @@ enum Genre{
   HORROR
 }
 
+
+//! One-to-Many Movie (один) → Review (много)
 model Movie{
   id String @id @default(uuid())
   title String
@@ -24,12 +26,18 @@ model Movie{
   releaseYear Int @map("release_year") 
   isPublic Boolean @default(false) @map("is_public")
 
-  genre Genre @default(HORROR)
+  // genre Genre @default(HORROR)
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-
   @@map("movies")
+  
+  // ✔ "один фильм – много отзывов"
+  reviews Review[]
+  actors Actor[]
+
+  posterId String? @unique @map("poster_id")
+  poster MoviePoster? @relation(fields: [posterId], references: [id])
 }
 
 
@@ -40,11 +48,43 @@ model Review {
   content String
   author String
 
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  @@map("reviews")
+
+    // ✔ "каждый отзыв связан только с одним фильмом"
+  movieId String @map("movie_id") // к кому привязан отзыв
+  // fields - какие поля в текущей модели будут использоваться для связи с другой моделью
+  movie Movie @relation(fields: [movieId], references: [id], onDelete: Cascade) 
+}
+
+//* many-to-many  Movie (много) → Actor (много)
+model Actor {
+  id String  @id @default(uuid())
+
+  name String
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+  @@map("actors")
 
-  @@map("reviews")
+  movies Movie[]
+}
+
+//? one-to-one   Movie ↔ MoviePoster
+model MoviePoster{
+  id String @id @default(uuid())
+
+  url String 
+
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  @@map("movie_posters")
+
+  movie Movie?
 }
 
 
+//@@unique([email, phone]) комбинация значений email + phone должна быть уникальна.
+//@@index - ускоряют поиск в Бд если часто выборка по какому-то полю можно его индексировать
