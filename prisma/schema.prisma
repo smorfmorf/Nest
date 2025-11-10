@@ -16,8 +16,16 @@ enum Genre{
   HORROR
 }
 
+/*
 
-//! One-to-Many Movie (один) → Review (много)
+@@unique([email, phone]) комбинация значений email + phone должна быть уникальна.
+@@index - ускоряют поиск в Бд если часто выборка по какому-то полю можно его индексировать
+
+  Movie (один) → Review (много)
+  Movie (много) → Actor (много)
+  Movie (один) ↔ MoviePoster (один)
+*/
+//! One-to-Many 
 model Movie{
   id String @id @default(uuid())
   title String
@@ -52,13 +60,17 @@ model Review {
   updatedAt DateTime @updatedAt @map("updated_at")
   @@map("reviews")
 
-    // ✔ "каждый отзыв связан только с одним фильмом"
-  movieId String @map("movie_id") // к кому привязан отзыв
-  // fields - какие поля в текущей модели будут использоваться для связи с другой моделью
+
+  /*
+   ✔ "каждый отзыв связан только с одним фильмом"
+   movieId - к кому привязан отзыв
+   fields - какое поле в текущей модели будет использоват
+  */
+  movieId String @map("movie_id") 
   movie Movie @relation(fields: [movieId], references: [id], onDelete: Cascade) 
 }
 
-//* many-to-many  Movie (много) → Actor (много)
+//* many-to-many 
 model Actor {
   id String  @id @default(uuid())
 
@@ -71,7 +83,7 @@ model Actor {
   movies Movie[]
 }
 
-//? one-to-one   Movie ↔ MoviePoster
+//? one-to-one  
 model MoviePoster{
   id String @id @default(uuid())
 
@@ -85,6 +97,3 @@ model MoviePoster{
   movie Movie?
 }
 
-
-//@@unique([email, phone]) комбинация значений email + phone должна быть уникальна.
-//@@index - ускоряют поиск в Бд если часто выборка по какому-то полю можно его индексировать

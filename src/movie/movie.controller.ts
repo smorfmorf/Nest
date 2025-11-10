@@ -30,6 +30,6 @@ export class MovieController {
 
   @Post()
   create(@Body() dto: CreateMovieDTO) {
-    return this.movieService.create(dto);
+    console.log(dto instanceof CreateMovieDTO);
   }
 }

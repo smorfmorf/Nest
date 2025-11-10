@@ -1,9 +1,10 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
 import { ActorModule } from './actor/actor.module';
 import { MovieModule } from './movie/movie.module';
+import { LoggerMiddleware } from './global/logger.middleware';
 // точка входа приложения (тут объединяем все остальные модули в один)
 // //! "cmd nest g res movie --no-spec"
 @Module({
@@ -30,7 +31,12 @@ import { MovieModule } from './movie/movie.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    // указываем пути на каких будет работать
+    consumer.apply(LoggerMiddleware).forRoutes('*');
+  }
+}
 
 // в imports - подключаем стороние либы чтобы они были доступны по всему App
 // controllers - обрабатывают входящие URL - HTTP запросы
