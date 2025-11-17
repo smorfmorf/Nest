@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
   output   = "../generated/prisma"
@@ -10,90 +9,87 @@ datasource db {
 }
 
 // ТУТ описываем модели все в одном файле как я люблю ;D
-enum Genre{
+enum Genre {
   ACTION
   COMEDY
   HORROR
 }
 
-/*
-
-@@unique([email, phone]) комбинация значений email + phone должна быть уникальна.
-@@index - ускоряют поиск в Бд если часто выборка по какому-то полю можно его индексировать
-
-  Movie (один) → Review (много)
-  Movie (много) → Actor (много)
-  Movie (один) ↔ MoviePoster (один)
-*/
+/**
+ * @@unique([email, phone]) комбинация значений email + phone должна быть уникальна.
+ * @@index - ускоряют поиск в Бд если часто выборка по какому-то полю можно его индексировать
+ * Movie (один) → Review (много)
+ * Movie (много) → Actor (много)
+ * Movie (один) ↔ MoviePoster (один)
+ */
 //! One-to-Many 
-model Movie{
-  id String @id @default(uuid())
-  title String
+model Movie {
+  id          String  @id @default(uuid())
+  title       String
   description String?
 
-  releaseYear Int @map("release_year") 
-  isPublic Boolean @default(false) @map("is_public")
+  releaseYear Int     @map("release_year")
+  isPublic    Boolean @default(false) @map("is_public")
 
   // genre Genre @default(HORROR)
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-  @@map("movies")
-  
+
   // ✔ "один фильм – много отзывов"
   reviews Review[]
-  actors Actor[]
+  actors  Actor[]
 
-  posterId String? @unique @map("poster_id")
-  poster MoviePoster? @relation(fields: [posterId], references: [id])
+  posterId String?      @unique @map("poster_id")
+  poster   MoviePoster? @relation(fields: [posterId], references: [id])
+
+  @@map("movies")
 }
-
 
 model Review {
   id String @id @default(uuid())
 
-
   content String
-  author String
+  author  String
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+
+  /**
+   * ✔ "каждый отзыв связан только с одним фильмом"
+   * movieId - к кому привязан отзыв
+   * fields - какое поле в текущей модели будет использоват
+   */
+  movieId String @map("movie_id")
+  movie   Movie  @relation(fields: [movieId], references: [id], onDelete: Cascade)
+
   @@map("reviews")
-
-
-  /*
-   ✔ "каждый отзыв связан только с одним фильмом"
-   movieId - к кому привязан отзыв
-   fields - какое поле в текущей модели будет использоват
-  */
-  movieId String @map("movie_id") 
-  movie Movie @relation(fields: [movieId], references: [id], onDelete: Cascade) 
 }
 
 //* many-to-many 
 model Actor {
-  id String  @id @default(uuid())
+  id String @id @default(uuid())
 
   name String
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-  @@map("actors")
 
   movies Movie[]
+
+  @@map("actors")
 }
 
 //? one-to-one  
-model MoviePoster{
+model MoviePoster {
   id String @id @default(uuid())
 
-  url String 
-
+  url String
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-  @@map("movie_posters")
 
   movie Movie?
-}
 
+  @@map("movie_posters")
+}

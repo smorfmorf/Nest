@@ -1,11 +1,11 @@
+import { Movie } from 'generated/prisma';
 import { Injectable } from '@nestjs/common';
-import { Movie, MoviePoster } from 'generated/prisma';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateMovieDTO } from './movie.controller';
 
 @Injectable()
 export class MovieService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(private readonly prismaService: PrismaService) { }
 
   async findAll(): Promise<Movie[]> {
     return await this.prismaService.movie.findMany({
@@ -45,10 +45,10 @@ export class MovieService {
         },
         poster: imageUrl
           ? {
-              create: {
-                url: imageUrl,
-              },
-            }
+            create: {
+              url: imageUrl,
+            },
+          }
           : undefined,
       },
       include: {

@@ -18,6 +18,8 @@ async function bootstrap() {
   app.useGlobalInterceptors(new ResponseInterceptor());
   app.useGlobalFilters(new AllExceptionsFilter());
 
+
+  //! Swagger API doc
   const config = new DocumentBuilder()
     .setTitle('Project Ambrella')
     .setDescription('The Project Ambrella API description')
