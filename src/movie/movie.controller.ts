@@ -13,15 +13,17 @@ export class CreateMovieDTO {
   @Max(new Date().getFullYear())
   releaseYear: number;
 
+  description: string;
   actorsId: string[];
 
   @IsString()
   imageUrl: string;
 }
 
+
 @Controller('movie')
 export class MovieController {
-  constructor(private readonly movieService: MovieService) {}
+  constructor(private readonly movieService: MovieService) { }
 
   @Get()
   findAll() {
@@ -31,5 +33,7 @@ export class MovieController {
   @Post()
   create(@Body() dto: CreateMovieDTO) {
     console.log(dto instanceof CreateMovieDTO);
+
+    return this.movieService.create(dto);
   }
 }

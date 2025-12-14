@@ -10,7 +10,7 @@ export class MovieService {
   async findAll(): Promise<Movie[]> {
     return await this.prismaService.movie.findMany({
       where: {
-        isPublic: true,
+        isPublic: false,
       },
       orderBy: {
         releaseYear: 'desc',
@@ -23,40 +23,46 @@ export class MovieService {
   }
 
   async create(dto: CreateMovieDTO) {
-    const { title, releaseYear, actorsId, imageUrl } = dto;
+    try {
+      const { title, releaseYear, actorsId, imageUrl, description } = dto;
 
-    const actors = await this.prismaService.actor.findMany({
-      where: {
-        // найти несколько актеров
-        id: {
-          in: actorsId,
+      const actors = await this.prismaService.actor.findMany({
+        where: {
+          // найти несколько актеров
+          id: {
+            in: Array.isArray(actorsId) ? actorsId : [actorsId],
+          },
         },
-      },
-    });
+      });
 
-    const movie = await this.prismaService.movie.create({
-      data: {
-        title,
-        releaseYear,
-        actors: {
-          connect: actors.map((actor) => ({
-            id: actor.id,
-          })),
+      const movie = await this.prismaService.movie.create({
+        data: {
+          title,
+          releaseYear,
+          description,
+          actors: {
+            connect: actors.map((actor) => ({
+              id: actor.id,
+            })),
+          },
+          poster: imageUrl
+            ? {
+              create: {
+                url: imageUrl,
+              },
+            }
+            : undefined,
         },
-        poster: imageUrl
-          ? {
-            create: {
-              url: imageUrl,
-            },
-          }
-          : undefined,
-      },
-      include: {
-        actors: true,
-        poster: true,
-      },
-    });
+        include: {
+          actors: true,
+          poster: true,
+        },
+      });
 
-    return movie;
+      return movie;
+    }
+    catch (err) {
+      console.log(err)
+    }
   }
 }
