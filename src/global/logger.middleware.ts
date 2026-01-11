@@ -9,3 +9,9 @@ export class LoggerMiddleware {
     next();
   }
 }
+
+//2-ой способ: если подключаем в main.ts через app.use()
+export function logger(req: Request, res: Response, next: NextFunction) {
+  console.log('Request...', req.method, req.url);
+  next();
+}

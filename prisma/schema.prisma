@@ -8,6 +8,16 @@ datasource db {
   url      = "file:./dev.db"
 }
 
+model User {
+  id       String @id @default(uuid())
+  email    String @unique
+  password String
+  name     String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+}
+
 // ТУТ описываем модели все в одном файле как я люблю ;D
 enum Genre {
   ACTION
@@ -68,8 +78,7 @@ model Review {
 
 //* many-to-many 
 model Actor {
-  id String @id @default(uuid())
-
+  id   String @id @default(uuid())
   name String
 
   createdAt DateTime @default(now()) @map("created_at")

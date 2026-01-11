@@ -9,7 +9,7 @@ export class CreateActorDTO {
 
 @Controller('actor')
 export class ActorController {
-  constructor(private readonly actorService: ActorService) {}
+  constructor(private readonly actorService: ActorService) { }
 
   @Post()
   create(@Body() dto: CreateActorDTO) {

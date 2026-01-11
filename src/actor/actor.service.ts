@@ -5,7 +5,8 @@ import { CreateActorDTO } from './actor.controller';
 
 @Injectable()
 export class ActorService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(private readonly prismaService: PrismaService) {
+  }
 
   async create(dto: CreateActorDTO): Promise<Actor> {
     const { name } = dto;
@@ -13,7 +14,11 @@ export class ActorService {
     const actor = await this.prismaService.actor.create({
       data: {
         name,
-      },
+        movies: {
+          connect: [
+            { id: 'a674b3eb-a6ea-45a2-a896-a64cc0e417aa' }]
+        },
+      }
     });
 
     return actor;

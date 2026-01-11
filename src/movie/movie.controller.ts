@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { MovieService } from './movie.service';
 import { IsInt, IsNotEmpty, IsString, Max, Min } from 'class-validator';
+import { ApiTags } from '@nestjs/swagger';
 
 export class CreateMovieDTO {
   @IsNotEmpty()

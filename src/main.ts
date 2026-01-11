@@ -14,16 +14,17 @@ async function bootstrap() {
 
   // делаем валидацию для всех входящих запросов
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
+
   // app.useGlobalGuards(new AuthGuard());
-  app.useGlobalInterceptors(new ResponseInterceptor());
   app.useGlobalFilters(new AllExceptionsFilter());
+  app.useGlobalInterceptors(new ResponseInterceptor());
 
 
   //! Swagger API doc
   const config = new DocumentBuilder()
     .setTitle('Project Ambrella')
     .setDescription('The Project Ambrella API description')
-    .setVersion('1.0')
+    .setVersion('1.0.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('/swagger', app, document);
@@ -33,4 +34,5 @@ async function bootstrap() {
 }
 
 bootstrap();
+
 // app.setGlobalPrefix('api');

@@ -5,8 +5,10 @@ import { PrismaModule } from './prisma/prisma.module';
 import { ActorModule } from './actor/actor.module';
 import { MovieModule } from './movie/movie.module';
 import { LoggerMiddleware } from './global/logger.middleware';
-// точка входа приложения (тут объединяем все остальные модули в один)
+import { AuthModule } from './auth/auth.module';
+
 // //! "cmd nest g res movie --no-spec"
+// точка входа приложения (тут объединяем все остальные модули в один)
 @Module({
   imports: [
     // TaskModule,
@@ -27,6 +29,7 @@ import { LoggerMiddleware } from './global/logger.middleware';
     PrismaModule,
     ActorModule,
     MovieModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
