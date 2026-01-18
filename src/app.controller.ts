@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Headers,
   Param,
   Post,
   UseGuards,
@@ -11,7 +12,7 @@ import { AppService } from './app.service';
 import { StringToLowerPipe } from './global/stringToLower.pipe';
 import { AuthGuard } from './global/auth.guard';
 import { UserAgent } from './global/userAgent.decorator';
-import { ApiBody, ApiHeader, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiHeader, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 
 @Controller()
 export class AppController {
@@ -28,16 +29,22 @@ export class AppController {
   }
 
   @UsePipes(StringToLowerPipe)
+  @ApiBody({ schema: { properties: { title: { type: 'string' } } } }) // для Swagger
   @Post()
-  postHello(@Body('title') title: string) {
-    return `Pipe ${title}`;
+  postHello(@UserAgent() userAgent: string, @Body('title') title: string) {
+    return `UserAgent() ${userAgent}: string, Pipe ${title}`;
   }
 
-  @ApiHeader({ name: 'X-Auth-Token', description: 'Информация о клиенте' })
-  @ApiBody({ schema: { properties: { userAgent: { type: 'string' } } } })
+
+  @ApiBearerAuth()
+  @ApiHeader({
+    name: 'X-Custom-Token',  // имя header
+    description: 'Кастомный токен клиента',
+    required: false,
+  })
   @UseGuards(AuthGuard)
   @Get('@me')
-  getMe(@UserAgent() userAgent: string, @Param('me') me: string) {
-    return `Мой профиль ${userAgent}`;
+  getMe(@Param('me') me: string, @Headers('X-Custom-Token') customToken?: string) {
+    return `Мой профиль ${me}, customToken ${customToken}`;
   }
 }

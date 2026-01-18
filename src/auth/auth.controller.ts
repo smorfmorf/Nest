@@ -1,6 +1,7 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post, Req, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { Request, Response } from 'express';
 
 export class RegisterRequestDTO {
   @IsString({ message: "Name must be a string" })
@@ -20,13 +21,19 @@ export class AuthController {
   constructor(private readonly authService: AuthService) { }
 
   @Post('register')
-  register(@Body() dto: RegisterRequestDTO) {
-    return this.authService.register(dto);
+  register(@Res({ passthrough: true }) res: Response, @Body() dto: RegisterRequestDTO) {
+    return this.authService.register(res, dto);
   }
 
   @Post('login')
-  login(@Body() dto: RegisterRequestDTO) {
-    return this.authService.login(dto);
+  login(@Res({ passthrough: true }) res: Response, @Body() dto: RegisterRequestDTO) {
+    return this.authService.login(res, dto);
+  }
+
+  @Post('refresh')
+  @HttpCode(200)
+  checkAuth(@Res({ passthrough: true }) res: Response, @Req() req: Request) {
+    return this.authService.checkAuth(res, req);
   }
 
 

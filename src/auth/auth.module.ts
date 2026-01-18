@@ -11,7 +11,8 @@ import { JwtModule } from '@nestjs/jwt';
       useFactory: () => ({
         // secret: process.env.JWT_SECRET,
         secret: 'mazaka',
-        signOptions: { expiresIn: '24h', algorithm: 'HS256' }
+        signOptions: { expiresIn: '24h', },
+        verifyOptions: { algorithms: ['HS256'], ignoreExpiration: false }
       })
     })
   ]
